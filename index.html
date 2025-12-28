@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unified Firm OS: Strategic Blueprint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phosphor-icons/1.4.2/script.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+        :root {
+            --color-bg: #FDFCF8; /* Lightened Warm Neutral */
+            --color-card: #FFFFFF;
+            --color-text-main: #2D3748;
+            --color-accent-primary: #2C5282;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-main);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            height: 300px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
+        .nav-link.active {
+            color: var(--color-accent-primary);
+            border-bottom: 2px solid var(--color-accent-primary);
+        }
+
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-shadow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Scroll Reveal Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #F5F2EB 0%, #ffffff 50%, #EBF4FF 100%);
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="bg-white/90 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center cursor-pointer" onclick="navigateTo('vision')">
+                    <span class="text-xl font-bold text-slate-800 font-serif tracking-tight flex items-center gap-2">
+                        <div class="bg-indigo-900 text-white p-1 rounded"><i class="ph-squares-four"></i></div> 
+                        Unified Firm OS
+                    </span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center" id="nav-container">
+                    <button class="nav-link text-gray-500 hover:text-indigo-700 px-3 py-2 text-sm font-medium transition-colors active" data-section="vision">Vision</button>
+                    <button class="nav-link text-gray-500 hover:text-indigo-700 px-3 py-2 text-sm font-medium transition-colors" data-section="diagnostic">Diagnostic Engine</button>
+                    <button class="nav-link text-gray-500 hover:text-indigo-700 px-3 py-2 text-sm font-medium transition-colors" data-section="core">The Single Core</button>
+                    <button class="nav-link text-gray-500 hover:text-indigo-700 px-3 py-2 text-sm font-medium transition-colors" data-section="features">Modules</button>
+                </div>
+                <div class="hidden md:flex items-center">
+                    <button class="bg-indigo-900 hover:bg-indigo-800 text-white text-sm font-bold py-2 px-4 rounded-full transition-colors shadow-lg shadow-indigo-200">
+                        Request Access
+                    </button>
+                </div>
+                <div class="flex items-center md:hidden">
+                    <button id="mobile-menu-btn" class="text-gray-500 hover:text-gray-900 p-2">
+                        <i class="ph-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 shadow-lg absolute w-full z-50">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button class="block w-full text-left px-3 py-4 text-base font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50" onclick="mobileNavigateTo('vision')">Vision</button>
+                <button class="block w-full text-left px-3 py-4 text-base font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50" onclick="mobileNavigateTo('diagnostic')">Diagnostic Engine</button>
+                <button class="block w-full text-left px-3 py-4 text-base font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50" onclick="mobileNavigateTo('core')">The Single Core</button>
+                <button class="block w-full text-left px-3 py-4 text-base font-medium text-gray-700 hover:bg-gray-50" onclick="mobileNavigateTo('features')">Modules</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow">
+        
+        <!-- SECTION 1: EXECUTIVE VISION -->
+        <section id="vision" class="pt-12 pb-20 md:pt-24 md:pb-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto hero-gradient rounded-b-3xl mb-12">
+            <div class="text-center mb-16 reveal active">
+                <span class="inline-flex items-center gap-2 py-1 px-3 rounded-full bg-indigo-100 text-indigo-800 text-xs font-bold tracking-wider uppercase mb-6 border border-indigo-200">
+                    <span class="relative flex h-2 w-2">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                    </span>
+                    Now in Beta
+                </span>
+                <h1 class="text-5xl md:text-6xl font-bold text-slate-900 mb-6 leading-tight">
+                    Stop Bridging Silos.<br/>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-700 to-indigo-500">Unify Your Firm.</span>
+                </h1>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed mb-8">
+                    The first Operating System built to orchestrate the entire lifecycle of a private fund—from Legal to Tax to Compliance—in one atomic database.
+                </p>
+                <div class="flex justify-center gap-4">
+                    <button onclick="navigateTo('diagnostic')" class="bg-indigo-900 hover:bg-indigo-800 text-white font-bold py-3 px-8 rounded-full transition-all shadow-xl shadow-indigo-200 hover:-translate-y-1">
+                        Run Diagnostic
+                    </button>
+                    <button onclick="navigateTo('core')" class="bg-white hover:bg-gray-50 text-slate-700 border border-gray-300 font-bold py-3 px-8 rounded-full transition-all hover:-translate-y-1">
+                        View Architecture
+                    </button>
+                </div>
+            </div>
+
+            <!-- Social Proof Strip -->
+            <div class="border-y border-gray-200 py-8 mb-16 bg-white/50 reveal">
+                <p class="text-center text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Trusted by Forward-Thinking Firms</p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                    <!-- Fake Logo 1 -->
+                    <div class="flex items-center gap-2 text-xl font-serif font-bold text-slate-700">
+                        <i class="ph-triangle-fill text-indigo-800"></i> ALPHA CAP
+                    </div>
+                    <!-- Fake Logo 2 -->
+                    <div class="flex items-center gap-2 text-xl font-sans font-bold text-slate-700">
+                        <i class="ph-circles-three-plus-fill text-emerald-700"></i> OMEGA FUNDS
+                    </div>
+                    <!-- Fake Logo 3 -->
+                    <div class="flex items-center gap-2 text-xl font-mono font-bold text-slate-700">
+                        <i class="ph-hexagon-fill text-blue-600"></i> NEXUS.io
+                    </div>
+                    <!-- Fake Logo 4 -->
+                    <div class="flex items-center gap-2 text-xl font-serif italic font-bold text-slate-700">
+                        <i class="ph-crown-fill text-amber-600"></i> Sovereign
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center reveal">
+                <!-- Text Content -->
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl card-shadow border-l-4 border-red-400">
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">The Legacy Problem</h3>
+                        <p class="text-slate-600">Firms pay professionals to act as "manual data routers," moving data between Legal, Tax, and Compliance silos.</p>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-500">
+                            <li class="flex items-center"><i class="ph-x-circle text-red-500 mr-2 text-lg"></i> Disconnected ERP Systems</li>
+                            <li class="flex items-center"><i class="ph-x-circle text-red-500 mr-2 text-lg"></i> Manual Blue Sky Filings</li>
+                        </ul>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl card-shadow border-l-4 border-indigo-600">
+                        <h3 class="text-lg font-bold text-slate-800 mb-2">The Unified Solution</h3>
+                        <p class="text-slate-600">A unified engine where a single data entry triggers cascades of actions across Fund Admin, Compliance, and Tax.</p>
+                        <ul class="mt-4 space-y-2 text-sm text-slate-500">
+                            <li class="flex items-center"><i class="ph-check-circle text-indigo-600 mr-2 text-lg"></i> AI-Orchestrated Workflows</li>
+                            <li class="flex items-center"><i class="ph-check-circle text-indigo-600 mr-2 text-lg"></i> Real-time Jurisdictional Logic</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Interactive Chart -->
+                <div class="bg-white p-6 rounded-2xl card-shadow border border-gray-100">
+                    <h3 class="text-center text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">Performance Gap</h3>
+                    <div class="chart-container">
+                        <canvas id="comparisonChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: DIAGNOSTIC ENGINE (Onboarding) -->
+        <section id="diagnostic" class="py-16 px-4 sm:px-6 lg:px-8 border-y border-gray-100 hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12 text-center reveal">
+                    <span class="text-indigo-600 font-semibold tracking-wide uppercase text-sm">Interactive Demo</span>
+                    <h2 class="text-4xl font-bold text-slate-900 mt-2">Jurisdictional Diagnostic Engine</h2>
+                    <p class="mt-4 text-slate-600 max-w-2xl mx-auto">
+                        Don't guess your regulatory requirements. Let our engine interview you.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 reveal">
+                    <!-- Controls -->
+                    <div class="lg:col-span-4 bg-white p-8 rounded-2xl card-shadow border border-slate-100">
+                        <h3 class="font-bold text-slate-800 mb-6 flex items-center">
+                            <i class="ph-sliders-horizontal text-xl mr-2 text-indigo-600"></i> Firm Parameters
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Assets Under Management (AUM)</label>
+                                <input type="range" id="aum-slider" min="0" max="200" value="50" step="5" class="w-full h-2 bg-indigo-100 rounded-lg appearance-none cursor-pointer accent-indigo-600">
+                                <div class="flex justify-between text-xs text-slate-500 mt-2">
+                                    <span>$0M</span>
+                                    <span id="aum-display" class="font-bold text-indigo-600 text-lg">$50M</span>
+                                    <span>$200M+</span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Headquarters</label>
+                                <select id="location-select" class="w-full p-3 border border-slate-200 rounded-lg bg-slate-50 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-shadow">
+                                    <option value="generic">Generic State (e.g., Ohio)</option>
+                                    <option value="NY">New York (The Exception)</option>
+                                    <option value="WY">Wyoming (The Anomaly)</option>
+                                    <option value="TX">Texas (Special Notice)</option>
+                                    <option value="FL">Florida (Net Cap Rule)</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-2">Business Model</label>
+                                <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-lg border border-slate-200 hover:border-indigo-300 transition-colors cursor-pointer">
+                                    <input type="checkbox" id="internet-adviser" class="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+                                    <span class="text-sm text-slate-700 font-medium">Internet/Robo Adviser</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="run-diagnostic" class="mt-8 w-full bg-indigo-900 hover:bg-indigo-800 text-white font-bold py-4 px-4 rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center justify-center gap-2">
+                            Run Analysis <i class="ph-lightning-fill text-yellow-400"></i>
+                        </button>
+                    </div>
+
+                    <!-- Results Display -->
+                    <div class="lg:col-span-8">
+                        <div id="diagnostic-result" class="h-full bg-slate-900 rounded-2xl p-8 text-white relative overflow-hidden flex flex-col justify-center items-center text-center transition-all duration-300 min-h-[450px] shadow-2xl">
+                            <!-- Default State -->
+                            <div id="result-placeholder" class="animate-pulse">
+                                <div class="w-24 h-24 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i class="ph-fingerprint text-5xl text-slate-600"></i>
+                                </div>
+                                <h3 class="text-xl font-medium text-slate-400">Configure parameters to determine jurisdiction</h3>
+                            </div>
+                            
+                            <!-- Dynamic Content (Hidden by default) -->
+                            <div id="result-content" class="hidden w-full text-left">
+                                <div class="flex flex-col md:flex-row justify-between items-start mb-8 border-b border-slate-700 pb-6">
+                                    <div class="mb-4 md:mb-0">
+                                        <span class="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-2 block">Recommended Registration</span>
+                                        <h2 id="reg-status" class="text-4xl font-bold text-white mt-1">SEC Registered</h2>
+                                    </div>
+                                    <div class="bg-slate-800 px-5 py-3 rounded-xl border border-slate-600">
+                                        <span class="text-xs text-slate-400 block uppercase tracking-wide mb-1">Logic Applied</span>
+                                        <span id="logic-reason" class="text-sm font-mono text-yellow-400 font-bold">AUM > $110M Mandatory</span>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                    <div class="bg-slate-800/50 p-5 rounded-xl border border-slate-700 hover:bg-slate-800 transition-colors">
+                                        <h4 class="text-sm font-bold text-slate-300 mb-3 flex items-center"><i class="ph-warning-circle text-orange-400 mr-2 text-lg"></i> Critical Forms</h4>
+                                        <ul id="forms-list" class="text-sm text-slate-400 space-y-2">
+                                            <li>• Form ADV Part 1 & 2A</li>
+                                        </ul>
+                                    </div>
+                                    <div class="bg-slate-800/50 p-5 rounded-xl border border-slate-700 hover:bg-slate-800 transition-colors">
+                                        <h4 class="text-sm font-bold text-slate-300 mb-3 flex items-center"><i class="ph-robot text-blue-400 mr-2 text-lg"></i> AI Tasks Triggered</h4>
+                                        <ul id="tasks-list" class="text-sm text-slate-400 space-y-2">
+                                            <li>• Initiate Annual Review Schedule</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Lead Magnet Action -->
+                                <button onclick="alert('Feature Simulator: This would download a PDF customized to the logic above.')" class="w-full border border-slate-600 hover:bg-slate-800 text-slate-300 py-3 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm">
+                                    <i class="ph-file-pdf"></i> Download Full Strategy PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: THE SINGLE CORE -->
+        <section id="core" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto hidden">
+            <div class="text-center mb-16 reveal">
+                <span class="text-indigo-600 font-semibold tracking-wide uppercase text-sm">Architectural Superiority</span>
+                <h2 class="text-4xl font-bold text-slate-900 mt-2">The "Single Core" Advantage</h2>
+                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">
+                    In legacy systems, a capital call is just a PDF. In the Unified OS, a single event propagates instantly across the entire ecosystem.
+                </p>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow p-10 border border-slate-100 reveal">
+                <!-- Interactive Flow Visualization -->
+                <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 relative mb-12">
+                    <!-- Line connector for desktop -->
+                    <div class="hidden md:block absolute top-[2rem] left-0 w-full h-1 bg-gray-100 -z-10"></div>
+
+                    <!-- Step 1 -->
+                    <button class="w-full md:w-1/4 flex flex-col items-center text-center group focus:outline-none" onclick="activateCoreStep(1)">
+                        <div id="step-1-circle" class="w-16 h-16 rounded-full bg-slate-900 text-white flex items-center justify-center text-2xl font-bold mb-4 shadow-xl transition-all transform group-hover:scale-110 ring-4 ring-indigo-100 group-focus:ring-indigo-300 z-10">
+                            <i class="ph-money"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">Event Trigger</h4>
+                        <p class="text-xs text-slate-500 mt-1">Investor sends Capital Call</p>
+                    </button>
+
+                    <!-- Step 2 -->
+                    <button class="w-full md:w-1/4 flex flex-col items-center text-center group focus:outline-none" onclick="activateCoreStep(2)">
+                        <div id="step-2-circle" class="w-16 h-16 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center text-2xl font-bold mb-4 shadow-sm transition-all transform group-hover:scale-110 group-focus:border-indigo-300 z-10">
+                            <i class="ph-bank"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">CFO Suite</h4>
+                        <p class="text-xs text-slate-500 mt-1">Updates Capital Acct</p>
+                    </button>
+
+                    <!-- Step 3 -->
+                    <button class="w-full md:w-1/4 flex flex-col items-center text-center group focus:outline-none" onclick="activateCoreStep(3)">
+                        <div id="step-3-circle" class="w-16 h-16 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center text-2xl font-bold mb-4 shadow-sm transition-all transform group-hover:scale-110 group-focus:border-indigo-300 z-10">
+                            <i class="ph-gavel"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">Legal/Blue Sky</h4>
+                        <p class="text-xs text-slate-500 mt-1">Checks Residency</p>
+                    </button>
+
+                    <!-- Step 4 -->
+                    <button class="w-full md:w-1/4 flex flex-col items-center text-center group focus:outline-none" onclick="activateCoreStep(4)">
+                        <div id="step-4-circle" class="w-16 h-16 rounded-full bg-white border-2 border-slate-200 text-slate-400 flex items-center justify-center text-2xl font-bold mb-4 shadow-sm transition-all transform group-hover:scale-110 group-focus:border-indigo-300 z-10">
+                            <i class="ph-shield-check"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 group-hover:text-indigo-700 transition-colors">Compliance</h4>
+                        <p class="text-xs text-slate-500 mt-1">Scans OFAC</p>
+                    </button>
+                </div>
+
+                <!-- Detail Panel -->
+                <div class="bg-indigo-50 rounded-2xl p-8 border border-indigo-100 min-h-[180px] flex items-center justify-center transition-all">
+                    <div id="core-detail-text" class="text-center w-full max-w-2xl">
+                        <h5 class="font-bold text-indigo-900 mb-2 text-lg">Select a node above to see the workflow detail.</h5>
+                        <p class="text-slate-600">The core engine synchronizes these disjointed tasks into one atomic transaction.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: FEATURE MODULES -->
+        <section id="features" class="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8 hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-16 text-center reveal">
+                    <h2 class="text-4xl font-bold text-slate-900">Functional Modules</h2>
+                    <p class="mt-4 text-slate-600">Deep dive into the specific capabilities replacing legacy incumbents.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal">
+                    
+                    <!-- RIA Core -->
+                    <div class="bg-white rounded-2xl card-shadow overflow-hidden group">
+                        <div class="bg-indigo-900 p-6 text-white flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-lg">RIA Compliance Core</h3>
+                                <span class="text-xs text-indigo-200 uppercase tracking-wide">Module v2.1</span>
+                            </div>
+                            <i class="ph-shield text-3xl opacity-80"></i>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 p-2 rounded-lg text-indigo-700 mr-3"><i class="ph-book-open"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">Living Manual</h4>
+                                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">GenAI scans regulations (T+1, Marketing Rule) and auto-redlines policies.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-indigo-100 p-2 rounded-lg text-indigo-700 mr-3"><i class="ph-megaphone"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">Marketing AI</h4>
+                                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pre-scores social posts for "promissory" language before CCO review.</p>
+                                </div>
+                            </div>
+                            <!-- Technical Spec Tag -->
+                            <div class="pt-4 border-t border-gray-100">
+                                <span class="inline-block bg-gray-100 rounded px-2 py-1 text-xs font-mono text-gray-500">API: REST / Webhooks</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GP & Funds -->
+                    <div class="bg-white rounded-2xl card-shadow overflow-hidden group">
+                        <div class="bg-emerald-800 p-6 text-white flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-lg">GP & Private Funds</h3>
+                                <span class="text-xs text-emerald-200 uppercase tracking-wide">Module v1.8</span>
+                            </div>
+                            <i class="ph-chart-line-up text-3xl opacity-80"></i>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-emerald-100 p-2 rounded-lg text-emerald-700 mr-3"><i class="ph-map-pin"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">Blue Sky Automation</h4>
+                                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Integration with NASAA EFD for "one-click" Form D state filings.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-emerald-100 p-2 rounded-lg text-emerald-700 mr-3"><i class="ph-siren"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">Form PF Sentinel</h4>
+                                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">72-hour trigger monitoring for NAV drops or margin breaches.</p>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-gray-100">
+                                <span class="inline-block bg-gray-100 rounded px-2 py-1 text-xs font-mono text-gray-500">Data: JSON / XML</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CFO Suite -->
+                    <div class="bg-white rounded-2xl card-shadow overflow-hidden group">
+                        <div class="bg-slate-800 p-6 text-white flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-lg">CFO & Tax</h3>
+                                <span class="text-xs text-slate-400 uppercase tracking-wide">Module v3.0</span>
+                            </div>
+                            <i class="ph-calculator text-3xl opacity-80"></i>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <div class="flex items-start">
+                                <div class="bg-slate-100 p-2 rounded-lg text-slate-700 mr-3"><i class="ph-ghost"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">Shadow Accounting</h4>
+                                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Ingests Admin API to verify NAV and fee calcs against internal ledger.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="bg-slate-100 p-2 rounded-lg text-slate-700 mr-3"><i class="ph-receipt"></i></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-sm">K-1 Automation</h4>
+                                    <p class="text-xs text-slate-500 mt-1 leading-relaxed">Separate "Tax Basis" vs "GAAP Basis" ledgers for accurate reporting.</p>
+                                </div>
+                            </div>
+                            <div class="pt-4 border-t border-gray-100">
+                                <span class="inline-block bg-gray-100 rounded px-2 py-1 text-xs font-mono text-gray-500">Export: CSV / PDF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Education Stats (Data Visualization) -->
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 reveal">
+                    <div class="bg-white p-8 rounded-2xl card-shadow">
+                        <h3 class="text-sm font-bold text-slate-700 mb-4 uppercase">IAR Continuing Education Tracking</h3>
+                        <p class="text-xs text-slate-500 mb-6">The system tracks adopting jurisdictions (MD, MI, CA) vs non-adopting to prevent unnecessary work.</p>
+                        <div class="chart-container">
+                            <canvas id="educationChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 rounded-2xl card-shadow flex flex-col justify-center">
+                        <h3 class="text-sm font-bold text-slate-700 mb-6 uppercase">Legal AI: Contract Review</h3>
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="text-sm font-bold text-slate-800">NDA Review Speed</span>
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded font-bold">AI Agent Active</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-3 mb-2">
+                                <div class="bg-indigo-600 h-3 rounded-full" style="width: 95%"></div>
+                            </div>
+                            <p class="text-xs text-right text-slate-500 font-mono mb-6">Unified OS (Minutes)</p>
+                            
+                            <div class="w-full bg-slate-200 rounded-full h-3 mb-2">
+                                <div class="bg-slate-400 h-3 rounded-full" style="width: 40%"></div>
+                            </div>
+                            <p class="text-xs text-right text-slate-500 font-mono">Outside Counsel (Days)</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-12 text-sm">
+            <div>
+                <h4 class="text-white font-bold text-lg font-serif mb-6 flex items-center gap-2"><i class="ph-squares-four text-indigo-400"></i> Unified Firm OS</h4>
+                <p class="leading-relaxed text-slate-400">Architecting the post-fragmentation financial ecosystem. One core. Infinite workflows.</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">Key Capabilities</h4>
+                <ul class="space-y-3 text-slate-400">
+                    <li class="flex items-center gap-2"><i class="ph-check text-indigo-400"></i> Jurisdictional Diagnostic</li>
+                    <li class="flex items-center gap-2"><i class="ph-check text-indigo-400"></i> Shadow NAV Accounting</li>
+                    <li class="flex items-center gap-2"><i class="ph-check text-indigo-400"></i> Blue Sky Automation</li>
+                    <li class="flex items-center gap-2"><i class="ph-check text-indigo-400"></i> Marketing Rule AI</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-6">System Status</h4>
+                <div class="flex items-center space-x-2 bg-slate-800 w-fit px-3 py-1 rounded-full border border-slate-700">
+                    <span class="h-2 w-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-xs font-mono">v3.0.1 Stable</span>
+                </div>
+                <p class="mt-4 text-xs text-slate-500">© 2024 Unified Firm OS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- 1. Intersection Observer for Scroll Animations ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        function initObservers() {
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+
+
+        // --- 2. Navigation Logic ---
+        const sections = ['vision', 'diagnostic', 'core', 'features'];
+        
+        function navigateTo(sectionId) {
+            // Hide all sections
+            sections.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            
+            // Show target section
+            const target = document.getElementById(sectionId);
+            target.classList.remove('hidden');
+            
+            // Re-initialize observers for newly visible elements
+            if(sectionId !== 'vision') { // Vision is already observed on load
+                setTimeout(() => {
+                    target.querySelectorAll('.reveal').forEach(el => {
+                        el.classList.remove('active'); // Reset to trigger anim
+                        observer.observe(el);
+                    });
+                }, 50);
+            }
+
+            // Update Navigation State
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // Trigger animations or chart redraws if necessary
+            if (sectionId === 'features') {
+                renderEducationChart();
+            }
+        }
+
+        function mobileNavigateTo(sectionId) {
+            navigateTo(sectionId);
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // Add Event Listeners to Nav Links
+        document.querySelectorAll('.nav-link').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                navigateTo(e.target.getAttribute('data-section'));
+            });
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+
+        // --- 3. Chart.js Implementations ---
+        
+        // A. Comparison Chart (Vision Section)
+        const ctxComp = document.getElementById('comparisonChart').getContext('2d');
+        const comparisonChart = new Chart(ctxComp, {
+            type: 'radar',
+            data: {
+                labels: ['User Experience', 'Integration', 'Automation', 'Pricing Transparency', 'Regulatory Speed'],
+                datasets: [{
+                    label: 'Unified Firm OS',
+                    data: [95, 90, 95, 85, 90],
+                    fill: true,
+                    backgroundColor: 'rgba(76, 81, 191, 0.2)', // Indigo
+                    borderColor: 'rgb(76, 81, 191)',
+                    pointBackgroundColor: 'rgb(76, 81, 191)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(76, 81, 191)'
+                }, {
+                    label: 'Legacy Incumbents',
+                    data: [40, 30, 50, 20, 60],
+                    fill: true,
+                    backgroundColor: 'rgba(113, 128, 150, 0.2)',
+                    borderColor: 'rgb(113, 128, 150)',
+                    pointBackgroundColor: 'rgb(113, 128, 150)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(113, 128, 150)'
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                elements: {
+                    line: { borderWidth: 3 }
+                },
+                scales: {
+                    r: {
+                        angleLines: { display: false },
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+
+        // B. Education Chart (Features Section) - Rendered on navigate
+        let educationChartInstance = null;
+        
+        function renderEducationChart() {
+            const ctxEdu = document.getElementById('educationChart').getContext('2d');
+            
+            if (educationChartInstance) {
+                educationChartInstance.destroy();
+            }
+
+            educationChartInstance = new Chart(ctxEdu, {
+                type: 'bar',
+                data: {
+                    labels: ['Required Credits', 'Ethics Component'],
+                    datasets: [{
+                        label: 'NASAA Model Rule',
+                        data: [12, 6],
+                        backgroundColor: ['rgba(76, 81, 191, 0.8)', 'rgba(236, 72, 153, 0.8)'], // Indigo & Pink
+                        borderColor: ['rgba(76, 81, 191, 1)', 'rgba(236, 72, 153, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true, max: 15 }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw + ' Credits / Year';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // --- 4. Diagnostic Engine Logic (Section 2) ---
+        const aumSlider = document.getElementById('aum-slider');
+        const aumDisplay = document.getElementById('aum-display');
+        const locationSelect = document.getElementById('location-select');
+        const internetAdviserCheck = document.getElementById('internet-adviser');
+        const runDiagnosticBtn = document.getElementById('run-diagnostic');
+        
+        const resultContainer = document.getElementById('diagnostic-result');
+        const resultPlaceholder = document.getElementById('result-placeholder');
+        const resultContent = document.getElementById('result-content');
+        
+        const regStatus = document.getElementById('reg-status');
+        const logicReason = document.getElementById('logic-reason');
+        const formsList = document.getElementById('forms-list');
+        const tasksList = document.getElementById('tasks-list');
+
+        aumSlider.addEventListener('input', (e) => {
+            aumDisplay.innerText = `$${e.target.value}M`;
+        });
+
+        runDiagnosticBtn.addEventListener('click', () => {
+            // Simulation Loading State
+            resultContainer.classList.add('bg-slate-800');
+            resultPlaceholder.innerHTML = '<i class="ph-spinner animate-spin text-4xl text-indigo-400"></i><p class="mt-4 text-indigo-200 font-mono text-sm">ANALYZING REGULATORY FOOTPRINT...</p>';
+            resultContent.classList.add('hidden');
+
+            setTimeout(() => {
+                const aum = parseInt(aumSlider.value);
+                const loc = locationSelect.value;
+                const isRobo = internetAdviserCheck.checked;
+
+                // Reset
+                resultPlaceholder.classList.add('hidden');
+                resultContent.classList.remove('hidden');
+                resultContainer.classList.remove('bg-slate-800');
+                resultContainer.classList.add('bg-slate-900');
+
+                // Logic Implementation
+                if (isRobo) {
+                    regStatus.innerText = "SEC Registered";
+                    regStatus.className = "text-4xl font-bold text-indigo-400 mt-1";
+                    logicReason.innerText = "Internet Adviser Exemption (Rule 203A-2(e))";
+                    formsList.innerHTML = "<li>• Form ADV</li><li>• Digital Validation Evidence</li>";
+                    tasksList.innerHTML = "<li>• Website Interaction Scan</li><li>• No de minimis check</li>";
+                    return;
+                }
+
+                if (loc === 'NY' && aum >= 25 && aum < 100) {
+                    regStatus.innerText = "SEC Registered";
+                    regStatus.className = "text-4xl font-bold text-emerald-400 mt-1";
+                    logicReason.innerText = "NY Exception: No State Inspection";
+                    formsList.innerHTML = "<li>• Form ADV Part 1</li><li>• Form 99 (NY Specific)</li>";
+                    tasksList.innerHTML = "<li>• Annual Renewal</li>";
+                    return;
+                }
+
+                if (loc === 'WY') {
+                    regStatus.innerText = "SEC Registered";
+                    regStatus.className = "text-4xl font-bold text-emerald-400 mt-1";
+                    logicReason.innerText = "WY Exception: No State Statute";
+                    formsList.innerHTML = "<li>• Form ADV</li>";
+                    return;
+                }
+
+                if (aum >= 110) {
+                    regStatus.innerText = "SEC Registered";
+                    regStatus.className = "text-4xl font-bold text-emerald-400 mt-1";
+                    logicReason.innerText = "Mandatory SEC (> $110M AUM)";
+                    formsList.innerHTML = "<li>• Form ADV</li><li>• Form PF (If Private Fund)</li>";
+                    if(loc === 'TX') formsList.innerHTML += "<li>• TX Form 133.18 (Balance Sheet)</li>";
+                } else if (aum >= 100 && aum < 110) {
+                    regStatus.innerText = "SEC Registered (Optional)";
+                    regStatus.className = "text-4xl font-bold text-yellow-400 mt-1";
+                    logicReason.innerText = "Buffer Zone ($100M - $110M)";
+                    formsList.innerHTML = "<li>• Form ADV</li>";
+                } else {
+                    regStatus.innerText = "State Registered";
+                    regStatus.className = "text-4xl font-bold text-orange-400 mt-1";
+                    logicReason.innerText = "State Jurisdiction (< $100M AUM)";
+                    formsList.innerHTML = `<li>• State Specific Filings (${loc === 'generic' ? 'Home State' : loc})</li>`;
+                    if(loc === 'TX') formsList.innerHTML += "<li>• TX Designated Officer Form</li>";
+                    if(loc === 'FL') formsList.innerHTML += "<li>• Net Capital Check ($2.5k/$25k)</li>";
+                }
+
+            }, 800);
+        });
+
+
+        // --- 5. Single Core Interaction (Section 3) ---
+        function activateCoreStep(step) {
+            // Reset Styles
+            for(let i=1; i<=4; i++) {
+                const el = document.getElementById(`step-${i}-circle`);
+                el.classList.remove('bg-indigo-600', 'text-white', 'ring-4', 'ring-indigo-100');
+                el.classList.add('bg-white', 'text-slate-400');
+                if(i===1) el.classList.replace('bg-white', 'bg-slate-900'); 
+            }
+
+            // Highlight Active
+            const activeEl = document.getElementById(`step-${step}-circle`);
+            activeEl.classList.remove('bg-white', 'text-slate-400', 'bg-slate-900');
+            activeEl.classList.add('bg-indigo-600', 'text-white', 'ring-4', 'ring-indigo-100');
+
+            // Update Text with Fade Effect
+            const textEl = document.getElementById('core-detail-text');
+            textEl.style.opacity = '0';
+            
+            setTimeout(() => {
+                const titles = ["Event Trigger", "CFO Suite Action", "Legal/Blue Sky Action", "Compliance Action"];
+                const descriptions = [
+                    "The process begins with a single data point: An investor sends a $500k wire for a Capital Call. No manual entry required.",
+                    "Simultaneously, the CFO engine credits the Investor's Capital Account and recalculates the Management Fee base. 100% Shadow NAV accuracy.",
+                    "The Legal engine checks the investor's zip code. It recognizes a new state, triggering the 15-day 'Blue Sky' notice filing timer automatically.",
+                    "The Compliance engine scans the source of funds against OFAC lists and logs the transaction in the 'Personal Trading' monitor."
+                ];
+
+                textEl.innerHTML = `
+                    <h5 class="font-bold text-indigo-900 mb-2 text-2xl">${titles[step-1]}</h5>
+                    <p class="text-slate-600 text-lg leading-relaxed">${descriptions[step-1]}</p>
+                `;
+                textEl.style.opacity = '1';
+            }, 200);
+        }
+
+        // Initialize Observers on Load
+        document.addEventListener('DOMContentLoaded', initObservers);
+
+    </script>
+</body>
+</html>
